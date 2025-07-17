@@ -1,0 +1,206 @@
+
+<!DOCTYPE html>
+<html lang="zh-CN">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>Ayala 生日快乐！</title>
+    <style>
+        body {
+            font-family: 'Arial', sans-serif;
+            display: flex;
+            justify-content: center;
+            align-items: center;
+            min-height: 100vh;
+            margin: 0;
+            background-image: url('ayala_background.jpg');
+            background-size: cover;
+            background-position: center center;
+            background-repeat: no-repeat;
+            background-attachment: fixed;
+            color: #d81b60;
+            text-align: center;
+            flex-direction: column;
+            padding: 20px;
+            box-sizing: border-box;
+            text-shadow: 1px 1px 3px rgba(0,0,0,0.3);
+            overflow: hidden; /* 默认隐藏滚动条，直到弹窗关闭 */
+        }
+
+        /* 隐藏主要内容区域，直到弹窗关闭 */
+        .main-content {
+            opacity: 0;
+            visibility: hidden;
+            transition: opacity 1s ease, visibility 1s ease;
+            width: 100%; /* 确保占据整个宽度 */
+            display: flex;
+            justify-content: center;
+            align-items: center;
+            flex-direction: column;
+            flex-grow: 1; /* 让内容区域能够撑开 */
+        }
+        .main-content.active {
+            opacity: 1;
+            visibility: visible;
+        }
+
+        .container {
+            background-color: rgba(255, 255, 255, 0.7);
+            padding: 40px 60px;
+            border-radius: 15px;
+            box-shadow: 0 10px 20px rgba(0, 0, 0, 0.15);
+            max-width: 700px;
+            width: 90%;
+            animation: fadeIn 2s ease-in-out;
+            color: #880e4f;
+            position: relative;
+            z-index: 1;
+        }
+        h1 {
+            color: #880e4f;
+            font-size: 3.5em;
+            margin-bottom: 20px;
+        }
+        p {
+            font-size: 1.5em;
+            line-height: 1.6;
+            margin-bottom: 25px;
+        }
+        .balloon {
+            font-size: 4em;
+            margin: 0 15px;
+            animation: floatUp 3s ease-in-out infinite alternate;
+            display: inline-block;
+        }
+        .balloon:nth-child(1) { animation-delay: 0s; color: #ffab91; }
+        .balloon:nth-child(2) { animation-delay: 0.5s; color: #ffcc80; }
+        .balloon:nth-child(3) { animation-delay: 1s; color: #a5d6a7; }
+        .balloon:nth-child(4) { animation-delay: 1.5s; color: #90caf9; }
+
+        @keyframes fadeIn {
+            from { opacity: 0; transform: scale(0.9); }
+            to { opacity: 1; transform: scale(1); }
+        }
+        @keyframes floatUp {
+            0% { transform: translateY(0); }
+            100% { transform: translateY(-20px); }
+        }
+        .footer {
+            margin-top: 30px;
+            font-size: 1em;
+            color: #ad1457;
+            text-shadow: 1px 1px 2px rgba(0,0,0,0.2);
+            position: relative;
+            z-index: 1;
+        }
+
+        @media (max-width: 600px) {
+            h1 {
+                font-size: 2.5em;
+            }
+            p {
+                font-size: 1.2em;
+            }
+            .container {
+                padding: 30px 40px;
+            }
+            .balloon {
+                font-size: 3em;
+            }
+        }
+
+        /* 弹窗样式 */
+        .popup-overlay {
+            position: fixed;
+            top: 0;
+            left: 0;
+            width: 100%;
+            height: 100%;
+            background-color: rgba(0, 0, 0, 0.8); /* 更深的半透明背景，更好地遮盖内容 */
+            display: flex;
+            justify-content: center;
+            align-items: center;
+            z-index: 1000;
+            opacity: 1; /* 初始显示 */
+            visibility: visible; /* 初始显示 */
+            transition: opacity 0.5s ease, visibility 0.5s ease;
+        }
+        .popup-overlay.hidden { /* 用于隐藏弹窗的类 */
+            opacity: 0;
+            visibility: hidden;
+        }
+        .popup-content {
+            background-color: #fff;
+            padding: 40px;
+            border-radius: 15px;
+            box-shadow: 0 10px 30px rgba(0, 0, 0, 0.3);
+            text-align: center;
+            max-width: 500px;
+            width: 90%;
+            transform: scale(1); /* 初始就是完整大小 */
+            transition: transform 0.3s ease;
+            color: #333;
+        }
+        .popup-content h2 {
+            color: #d81b60;
+            font-size: 2em;
+            margin-bottom: 25px;
+        }
+        .popup-button {
+            background-color: #ff4081;
+            color: white;
+            border: none;
+            padding: 15px 30px;
+            border-radius: 50px;
+            font-size: 1.2em;
+            cursor: pointer;
+            transition: background-color 0.3s ease, transform 0.2s ease;
+        }
+        .popup-button:hover {
+            background-color: #d81b60;
+            transform: translateY(-2px);
+        }
+    </style>
+</head>
+<body>
+    <div class="popup-overlay" id="welcomePopup">
+        <div class="popup-content">
+            <h2>小姐姐，准备好迎接18岁的自己了吗？</h2>
+            <button class="popup-button" onclick="closePopup()">当然 早已迫不及待😋</button>
+        </div>
+    </div>
+
+    <div class="main-content" id="mainContent">
+        <div class="container">
+            <div class="balloons">
+                <span class="balloon">&#127880;</span>
+                <span class="balloon">&#127881;</span>
+                <span class="balloon">&#127880;</span>
+                <span class="balloon">&#127881;</span>
+            </div>
+            <h1>祝 Ayala 生日快乐！</h1>
+            <p>亲爱的 Ayala，</p>
+            <p>Чотам брат келіп жетген Туған күнімен!老铁也是成年了哈，做事注意点，现在能抓你了🌚🤣新的一岁，正儿八经的新开始，祝你在充满未知的18岁里平安喜乐万事顺遂！在接下来一定要仰望星空不要只看脚下！在这到来的18岁我俩都要考雅思啥的东西，祝我俩一把过哈。反正多的东西不说（也说不出来啥了嘻嘻）总之明年夏天阿斯塔纳等我！也许我有些时候可能会烦到你，我也尽量不会哈，但你也知道我在这边就你一个玩的好的，理解万岁嘻嘻🤓虽然我们都无法知道未来是什么样的，不知道它的好与坏，但希望你能以积极的眼光看待他们！最后祝我俩都考上NU，都拿雅思8.5дейімба🌚18岁祝您牛逼铁子，祝你永远能闻到生活的花香！（本来想的你这个月月底要是能来木图给你过个生日的，毕竟在阿斯塔纳带我玩的那么好，但你跑回国了就只能等下次喽）</p>
+            <p>愿你的每一天都如同你一样闪耀，充满阳光和笑容。</p>
+            <p>祝你成年快乐！</p>
+        </div>
+        <div class="footer">
+            制作人：Narbollll
+        </div>
+    </div>
+
+    <script>
+        // 页面加载完成后，立刻显示弹窗（这是默认行为，无需额外 onload 事件）
+        // 隐藏主要内容，直到弹窗关闭
+        const mainContent = document.getElementById('mainContent');
+        const welcomePopup = document.getElementById('welcomePopup');
+
+        // 关闭弹窗并显示内容的函数
+        function closePopup() {
+            welcomePopup.classList.add('hidden'); // 隐藏弹窗
+            mainContent.classList.add('active'); // 显示主要内容
+            document.body.style.overflow = 'auto'; // 允许页面滚动
+        }
+    </script>
+</body>
+</html>
